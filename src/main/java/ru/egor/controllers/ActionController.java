@@ -46,14 +46,31 @@ public class ActionController {
         model.addAttribute("user",users);
         return "selectAll";
     }
-    @RequestMapping(value = "/searchById", method = {RequestMethod.GET,RequestMethod.POST})
-    public String searchById(@RequestParam(value = "id") String id, Model model){
-//        int user_id = Integer.parseInt(id);
-        System.out.println("Запуск сервлета searchById");
-        System.out.println("Parameter id = " + id);
-//        System.out.println("Parameter id = " + user_id);
-//        System.out.println("Parameter model = " + model);
-//        model.addAttribute(userService.getUserById(user_id));
-        return "searchById";
+//    @RequestMapping(value = "/searchById", method = {RequestMethod.GET,RequestMethod.POST})
+//    public String searchById(@ModelAttribute(value = "id") String id, Model model){
+//        if(!id.equals("")) {
+//            int user_id = Integer.parseInt(id);
+//            System.out.println("Запуск сервлета searchById");
+//            model.addAttribute(userService.getUserById(user_id));
+//            return "searchById";
+//        } return "searchById";
+//    }
+
+    @RequestMapping(value = "/searchById", method = {RequestMethod.GET})
+    public String searchByIdGet(@ModelAttribute(value = "id") String id){
+            System.out.println("Запуск сервлета searchById");
+         return "searchById";
     }
+
+    @RequestMapping(value = "/searchById", method = {RequestMethod.POST})
+    public String searchByIdPost(@ModelAttribute(value = "id") String id, Model model){
+            int user_id = Integer.parseInt(id);
+            System.out.println("Запуск сервлета searchById");
+            User user = userService.getUserById(user_id);
+            if(user!=null) {
+                model.addAttribute(user);
+                return "searchById";
+            }else return "redirect:searchById";
+    }
+
 }
