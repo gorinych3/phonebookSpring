@@ -12,7 +12,8 @@
 <html>
 <head>
     <title>Search by First Name</title>
-    <link rel="stylesheet" href="../css/w3.css">
+    <%--<link rel="stylesheet" href="../css/w3.css">--%>
+    <link rel="stylesheet" href="resources/css/w3.css">
 </head>
 
 <body class="w3-light-grey">
@@ -49,7 +50,7 @@
 
             <form method="post" class="w3-selection w3-light-grey w3-padding">
                 <label>ID пользователя:
-                    <input type="text" name="id" class="w3-input w3-animate-input w3-border w3-round-large" style="width: 30%">Поле обязательное для заполнения<br />
+                    <input type="hidden" value="${requestScope.get("id")}" name="id" class="w3-input w3-animate-input w3-border w3-round-large" style="width: 30%">Поле обязательное для заполнения<br />
                 </label>
 
                 <button type="submit" class="w3-btn w3-light-blue w3-round-large w3-margin-bottom">Принять</button>

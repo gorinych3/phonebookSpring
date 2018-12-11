@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.egor.model.User;
 import ru.egor.service.UserService;
@@ -45,10 +46,14 @@ public class ActionController {
         model.addAttribute("user",users);
         return "selectAll";
     }
-    @RequestMapping(value = "/searchById", method = RequestMethod.POST)
-    public String searchById(Model model, @ModelAttribute("id") int user_id){
+    @RequestMapping(value = "/searchById", method = {RequestMethod.GET,RequestMethod.POST})
+    public String searchById(@RequestParam(value = "id") String id, Model model){
+//        int user_id = Integer.parseInt(id);
         System.out.println("Запуск сервлета searchById");
-        model.addAttribute(userService.getUserById(user_id));
-        return "redirect:/searchById";
+        System.out.println("Parameter id = " + id);
+//        System.out.println("Parameter id = " + user_id);
+//        System.out.println("Parameter model = " + model);
+//        model.addAttribute(userService.getUserById(user_id));
+        return "searchById";
     }
 }
