@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>Add...</title>
-    <link rel="stylesheet" href="../css/w3.css">
+    <%--<link rel="stylesheet" href="../css/w3.css">--%>
+    <link rel="stylesheet" href="resources/css/w3.css">
 </head>
 
 <body class="w3-light-grey">

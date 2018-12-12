@@ -24,7 +24,7 @@ public interface UserDAO {
 
     User getUserById(int id);
 
-    User getUserMobilePhone(String m_phone);
+    List<User> getUserMobilePhone(String m_phone);
 
     List<User> searchByFirstName(String first_name);
 

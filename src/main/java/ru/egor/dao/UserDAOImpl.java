@@ -188,48 +188,14 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User getUserById(int id) {
         return sessionFactory.getCurrentSession().get(User.class,id);
-//        try {
-//            Session session = sessionFactory.openSession();
-//            Transaction transaction = session.beginTransaction();
-//
-//            User user = session.get(User.class,id);
-//
-//            transaction.commit();
-//
-//            System.out.println("get by id");
-//            session.close();
-//            return user;
-//        }finally {
-//            if(sessionFactory!=null){
-//                sessionFactory.close();
-//            }
-//        }
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public User getUserMobilePhone(String m_phone) {
+    public List<User> getUserMobilePhone(String m_phone) {
         Query<User> query = sessionFactory.getCurrentSession().createQuery("FROM User where m_phone = :paramName");
         query.setParameter("paramName",m_phone);
-        return query.getSingleResult();
-//        try {
-//            Session session = sessionFactory.openSession();
-//            Transaction transaction = session.beginTransaction();
-//
-//            Query<User> query = session.createQuery("FROM User where m_phone = :paramName");
-//            query.setParameter("paramName",m_phone);
-//            User user = query.getSingleResult();
-//
-//            transaction.commit();
-//
-//            System.out.println("get by m_phone");
-//            session.close();
-//            return user;
-//        }finally {
-//            if(sessionFactory!=null){
-//                sessionFactory.close();
-//            }
-//        }
+        return query.list();
     }
 
     @Override
@@ -238,27 +204,5 @@ public class UserDAOImpl implements UserDAO {
         Query<User> query = sessionFactory.getCurrentSession().createQuery("FROM User where f_name = :paramName");
         query.setParameter("paramName",first_name);
         return query.list();
-//        try {
-//            Session session = sessionFactory.openSession();
-//            Transaction transaction = session.beginTransaction();
-//
-//            Query<User> query = session.createQuery("FROM User where f_name = :paramName");
-//            query.setParameter("paramName",first_name);
-//            List<User> users =query.list();
-//
-//            for(User us : users) {
-//                System.out.println(us.toString());
-//            }
-//
-//            transaction.commit();
-//
-//            System.out.println("by first name");
-//            session.close();
-//            return users;
-//        }finally {
-//            if(sessionFactory!=null){
-//                sessionFactory.close();
-//            }
-//        }
     }
 }

@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>Search by First Name</title>
-    <link rel="stylesheet" href="../css/w3.css">
+    <%--<link rel="stylesheet" href="../css/w3.css">--%>
+    <link rel="stylesheet" href="resources/css/w3.css">
 </head>
 
 <body class="w3-light-grey">
@@ -45,10 +46,10 @@
     %>
     <div class="w3-card-4">
 
-        <form method="post" class="w3-selection w3-light-grey w3-padding">
+        <form method="post" action="${pageContext.request.contextPath}/searchByFirstName" class="w3-selection w3-light-grey w3-padding">
 
             <label>First Name:
-                <input type="text" name="f_name" class="w3-input w3-animate-input w3-border w3-round-large" style="width: 30%">Поле обязательное для заполнения<br />
+                <input type="text" name="f_name" value="${requestScope.get("f_name")}" class="w3-input w3-animate-input w3-border w3-round-large" style="width: 30%">Поле обязательное для заполнения<br />
             </label>
 
             <button type="submit" class="w3-btn w3-light-blue w3-round-large w3-margin-bottom">Принять</button>

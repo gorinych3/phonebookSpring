@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User getUserMobilePhone(String m_phone) {
+    public List<User> getUserMobilePhone(String m_phone) {
         return userDAO.getUserMobilePhone(m_phone);
     }
 

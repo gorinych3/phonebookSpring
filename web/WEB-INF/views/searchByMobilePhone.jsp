@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>Search by Mobile Phone</title>
-    <link rel="stylesheet" href="../css/w3.css">
+    <%--<link rel="stylesheet" href="../css/w3.css">--%>
+    <link rel="stylesheet" href="resources/css/w3.css">
 </head>
 
 <body class="w3-light-grey">
@@ -27,13 +28,13 @@
 <div class="w3-container w3-padding">
         <%
 
-            User user = (User) request.getAttribute("user");
+            List<User> users = (List<User>) request.getAttribute("users");
 
-            if (user != null ) {
+            if (users != null && !users.isEmpty()) {
                 out.println("<ul class=\"w3-ul\">");
-
-                out.println("<li class=\"w3-hover-sand\">" + user.toString() + "</li>");
-
+                for (User us : users) {
+                    out.println("<li class=\"w3-hover-sand\">" + us.toString() + "</li>");
+                }
                 out.println("</ul>");
 
             } else out.println("<div class=\"w3-panel w3-red w3-display-container w3-card-4 w3-round\">\n"
@@ -45,7 +46,7 @@
         %>
         <div class="w3-card-4">
 
-            <form method="post" class="w3-selection w3-light-grey w3-padding">
+            <form method="post" action="${pageContext.request.contextPath}/searchByMobilePhone" class="w3-selection w3-light-grey w3-padding">
                 <label>Мобильный телефон пользователя в формате +00000000000:
                     <input type="text" name="m_phone" class="w3-input w3-animate-input w3-border w3-round-large" style="width: 30%">Поле обязательное для заполнения<br />
                 </label>
