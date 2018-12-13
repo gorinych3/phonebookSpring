@@ -1,18 +1,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ page import="java.util.List" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Егор
   Date: 24.10.2018
   Time: 12:22
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="ru.egor.model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Search by First Name</title>
-    <%--<link rel="stylesheet" href="../css/w3.css">--%>
     <link rel="stylesheet" href="resources/css/w3.css">
 </head>
 
@@ -28,24 +26,6 @@
 </div>
 
 <div class="w3-container w3-padding">
-        <%
-
-            User user = (User) request.getAttribute("user");
-
-            if (user != null ) {
-                out.println("<ul class=\"w3-ul\">");
-
-                    out.println("<li class=\"w3-hover-sand\">" + user.toString() + "</li>");
-
-                out.println("</ul>");
-
-            } else out.println("<div class=\"w3-panel w3-red w3-display-container w3-card-4 w3-round\">\n"
-                    +
-                    "   <span onclick=\"this.parentElement.style.display='none'\"\n" +
-                    "   class=\"w3-button w3-margin-right w3-display-right w3-round-large w3-hover-red w3-border w3-border-red w3-hover-border-grey\">×</span>\n" +
-                    "   <h5>Input current id</h5>\n" +
-                    "</div>");
-        %>
         <div class="w3-card-4">
 
             <form method="post" action="${pageContext.request.contextPath}/searchById" class="w3-selection w3-light-grey w3-padding">

@@ -1,21 +1,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Егор
   Date: 24.10.2018
   Time: 12:22
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="ru.egor.model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Search by...</title>
-
-    <%--<link rel="stylesheet" href="../css/w3.css">--%>
-    <%--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">--%>
-    <%--<link rel="stylesheet" resource="${pageContext.request.contextPath}/resources/css/w3.css">--%>
-    <%--<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/w3.css"/>"/>--%>
     <link rel="stylesheet" href="resources/css/w3.css">
 </head>
 
