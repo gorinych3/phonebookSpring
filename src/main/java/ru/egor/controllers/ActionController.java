@@ -1,19 +1,18 @@
 package ru.egor.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.egor.model.Car;
 import ru.egor.model.PetAnimal;
 import ru.egor.model.User;
+import ru.egor.model.UsersPet;
 import ru.egor.service.UserService;
-import ru.egor.service.UserServiceImpl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
@@ -59,15 +58,18 @@ public class ActionController {
     public String searchByIdPost(@ModelAttribute(value = "id") String id, Model model){
             int user_id = Integer.parseInt(id);
             String operation = "searchById";
+            String errorMessage = "id";
             System.out.println("Запуск сервлета searchById");
             User user = userService.getUserById(user_id);
             List<User> users = new ArrayList<>();
+        System.out.println(user);
+        model.addAttribute("operationName",operation);
+        model.addAttribute("user",users);
+        model.addAttribute("errorMessage", errorMessage);
             if(user!=null) {
                 users.add(user);
-                model.addAttribute("operationName",operation);
-                model.addAttribute("user",users);
                 return "result";
-            }else return "redirect:searchById";
+            }else return "errorPage";
     }
 
     @RequestMapping(value = "/searchByFirstName", method = {RequestMethod.GET})
@@ -82,11 +84,13 @@ public class ActionController {
         System.out.println("Запуск сервлета searchByFirstName");
         users = userService.searchByFirstName(f_name);
         String operation = "searchByFirstName";
-        if(users!=null) {
-            model.addAttribute("operationName",operation);
-            model.addAttribute("user",users);
+        String errorMessage = "first name";
+        model.addAttribute("operationName",operation);
+        model.addAttribute("user",users);
+        model.addAttribute("errorMessage", errorMessage);
+        if(users.size()!=0) {
             return "result";
-        }else return "redirect:searchByFirstName";
+        }else return "errorPage";
     }
 
     @RequestMapping(value = "/searchByMobilePhone", method = {RequestMethod.GET})
@@ -99,16 +103,15 @@ public class ActionController {
     public String searchByMobilePhonePost(@ModelAttribute(value = "m_phone") String m_phone, Model model){
         System.out.println("Запуск сервлета searchByMobilePhone");
         String operation = "searchByMobilePhone";
+        String errorMessage = "mobile phone";
         List<User> users;
         users = userService.getUserMobilePhone(m_phone);
-        System.out.println(m_phone);
-        System.out.println(users.size());
-        System.out.println(users.get(0).getM_phone());
-        if(users!=null) {
-            model.addAttribute("operationName",operation);
-            model.addAttribute("user",users);
+        model.addAttribute("operationName",operation);
+        model.addAttribute("user",users);
+        model.addAttribute("errorMessage", errorMessage);
+        if(users.size()!=0) {
             return "result";
-        }else return "redirect:searchByMobilePhone";
+        }else return "errorPage";
     }
 
     @RequestMapping(value = "/addUser", method = {RequestMethod.GET})
@@ -118,13 +121,27 @@ public class ActionController {
     }
 
     @RequestMapping(value = "/addUser", method = {RequestMethod.POST})
-    public String addUserPost(User user, Model model){
+    public String addUserPost(User user,PetAnimal petAnimal, Model model){
         System.out.println("Запуск сервлета addUserPost");
         String operation = "add user";
-        userService.add(user);
-        System.out.println(user.getF_name());
-        model.addAttribute("operationName",operation);
-        return "result";
+        String errorMessage = "empty fields";
+        model.addAttribute("operationName", operation);
+        model.addAttribute("errorMessage", errorMessage);
+        if(!user.getF_name().equals("")&&!user.getL_name().equals("")&&!user.getAddress().equals("")) {
+            Set <UsersPet> usersPets = new HashSet<>();
+            UsersPet up = new UsersPet();
+            up.setUser(user);
+            up.setPetAnimal(petAnimal);
+            up.setUp_id(user.getId());
+            usersPets.add(up);
+            user.setUsersPets(usersPets);
+            System.out.println(user.toString());
+            System.out.println(petAnimal.toString());
+            System.out.println(user.getUsersPets().size());
+            userService.add(user);
+            model.addAttribute("user", user);
+            return "resultSingle";
+        }else return "errorPage";
     }
 
     @RequestMapping("/add")
@@ -144,9 +161,17 @@ public class ActionController {
         int user_id = Integer.parseInt(id);
         System.out.println("Запуск сервлета addPet");
         String operation = "add pet";
-        userService.addPet(user_id, petAnimal);
+        String errorMessage = "id";
         model.addAttribute("operationName",operation);
-        return "result";
+        model.addAttribute("errorMessage", errorMessage);
+        List<User> users = userService.list();
+        for(User us : users){
+            if(us.getId()==user_id){
+                userService.addPet(user_id, petAnimal);
+                return "result";
+            }
+        }
+        return "errorPage";
     }
 
     @RequestMapping(value = "/updateUser", method = {RequestMethod.GET})
@@ -159,9 +184,19 @@ public class ActionController {
     public String updateUserPost(User user, Model model){
         System.out.println("Запуск сервлета updateUserPost");
         String operation = "update user";
-        userService.update(user);
+        String errorMessage = "id or input empty fields";
+        model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("operationName",operation);
-        return "result";
+        List<User> users = userService.list();
+        for(User us : users){
+            System.out.println(us.toString());
+            if(us.getId()==user.getId()&&(!user.getF_name().equals("")&&!user.getL_name().equals("")&&!user.getAddress().equals(""))){
+                System.out.println("условие выполняется");
+                userService.update(user);
+                return "resultSingle";
+            }
+        }
+        return "errorPage";
     }
 
     @RequestMapping("/updateList")
@@ -204,9 +239,18 @@ public class ActionController {
         int user_id = Integer.parseInt(id);
         System.out.println("Запуск сервлета deleteById");
         String operation = "delete user";
-        userService.deleteUser(user_id);
+        List<User> users = userService.list();
         model.addAttribute("operationName",operation);
-        return "result";
+        String errorMessage = "id";
+        model.addAttribute("errorMessage", errorMessage);
+        for(User us : users){
+            if(us.getId()==user_id){
+                model.addAttribute("user",us);
+                userService.deleteUser(user_id);
+                return "resultSingle";
+            }
+        }
+        return "errorPage";
     }
 
     @RequestMapping(value = "/deletePet", method = {RequestMethod.GET})
@@ -217,18 +261,40 @@ public class ActionController {
 
     @RequestMapping(value = "/deletePet", method = {RequestMethod.POST})
     public String deletePetPost(@ModelAttribute(value = "user_id") String us_id, @ModelAttribute(value = "pet_id") String p_id, Model model){
+        System.out.println("Запуск сервлета deletePet");
+        String operation = "delete pet";
+        model.addAttribute("operationName", operation);
+        String errorMessage = "id";
+        model.addAttribute("errorMessage", errorMessage);
+        if(us_id.equals("")||p_id.equals("")) return "errorPage";
         int user_id = Integer.parseInt(us_id);
         int pet_id = Integer.parseInt(p_id);
-        String operation = "delete pet";
-        System.out.println("Запуск сервлета deletePet");
-        userService.deletePet(user_id, pet_id);
-        model.addAttribute("operationName",operation);
-        return "result";
+        List<User> users = userService.list();
+        Set<UsersPet> uspet;
+        for(User us : users){
+            uspet = us.getUsersPets();
+            if(us.getId()==user_id){
+                for(UsersPet usersPet : uspet) {
+                    if(usersPet.getPetAnimal().getPet_id()==pet_id) {
+                        model.addAttribute("user", us);
+                        userService.deletePet(user_id, pet_id);
+                        return "resultSingle";
+                    }
+                }
+            }
+        }
+        return "errorPage";
     }
 
     @RequestMapping("/result")
     public String result(){
         System.out.println("Запуск сервлета delete");
         return "result";
+    }
+
+    @RequestMapping("/errorPage")
+    public String errorPage(){
+        System.out.println("Запуск сервлета delete");
+        return "errorPage";
     }
 }

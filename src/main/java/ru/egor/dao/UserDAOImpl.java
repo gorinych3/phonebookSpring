@@ -24,6 +24,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void add(User user) {
         sessionFactory.getCurrentSession().save(user);
+        //Query query = sessionFactory.getCurrentSession().createQuery("select user_id from User where ")
+
     }
 
     @Override
@@ -195,7 +197,7 @@ public class UserDAOImpl implements UserDAO {
     public List<User> getUserMobilePhone(String m_phone) {
         Query<User> query = sessionFactory.getCurrentSession().createQuery("FROM User where m_phone = :paramName");
         query.setParameter("paramName",m_phone);
-        return query.list();
+        return query.getResultList();
     }
 
     @Override
