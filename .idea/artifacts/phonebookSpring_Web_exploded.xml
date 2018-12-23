@@ -34,6 +34,15 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.18.RELEASE" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Maven: org.postgresql:postgresql:9.3-1100-jdbc41" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: javax.annotation:jsr250-api:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:4.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:4.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:4.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.0.4.RELEASE" />
+          <element id="library" level="project" name="org.thymeleaf.extras:thymeleaf-extras-springsecurity4:Release" />
+          <element id="library" level="project" name="org.thymeleaf:thymeleaf:Release" />
         </element>
       </element>
     </root>
