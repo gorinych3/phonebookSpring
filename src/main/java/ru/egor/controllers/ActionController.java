@@ -56,10 +56,15 @@ public class ActionController {
 
     @RequestMapping(value = "/searchById", method = {RequestMethod.POST})
     public String searchByIdPost(@ModelAttribute(value = "id") String id, Model model){
-            int user_id = Integer.parseInt(id);
-            String operation = "searchById";
-            String errorMessage = "id";
-            System.out.println("Запуск сервлета searchById");
+        System.out.println("Запуск сервлета searchById");
+        String operation = "searchById";
+        String errorMessage = "id";
+        int user_id;
+        try {
+            user_id = Integer.parseInt(id);
+        }catch (NumberFormatException e){
+            return "errorPage";
+        }
             User user = userService.getUserById(user_id);
             List<User> users = new ArrayList<>();
         System.out.println(user);
@@ -158,12 +163,17 @@ public class ActionController {
 
     @RequestMapping(value = "/addPet", method = {RequestMethod.POST})
     public String addPetPost(@ModelAttribute(value = "id") String id, PetAnimal petAnimal, Model model){
-        int user_id = Integer.parseInt(id);
         System.out.println("Запуск сервлета addPet");
         String operation = "add pet";
         String errorMessage = "id";
         model.addAttribute("operationName",operation);
         model.addAttribute("errorMessage", errorMessage);
+        int user_id;
+        try {
+            user_id = Integer.parseInt(id);
+        }catch (NumberFormatException e){
+            return "errorPage";
+        }
         List<User> users = userService.list();
         for(User us : users){
             if(us.getId()==user_id){
@@ -189,7 +199,6 @@ public class ActionController {
         model.addAttribute("operationName",operation);
         List<User> users = userService.list();
         for(User us : users){
-            System.out.println(us.toString());
             if(us.getId()==user.getId()&&(!user.getF_name().equals("")&&!user.getL_name().equals("")&&!user.getAddress().equals(""))){
                 System.out.println("условие выполняется");
                 userService.update(user);
@@ -236,13 +245,18 @@ public class ActionController {
 
     @RequestMapping(value = "/deleteUser", method = {RequestMethod.POST})
     public String deleteByIdPost(@ModelAttribute(value = "id") String id, Model model){
-        int user_id = Integer.parseInt(id);
         System.out.println("Запуск сервлета deleteById");
         String operation = "delete user";
-        List<User> users = userService.list();
         model.addAttribute("operationName",operation);
         String errorMessage = "id";
         model.addAttribute("errorMessage", errorMessage);
+        int user_id;
+        try {
+            user_id = Integer.parseInt(id);
+        }catch (NumberFormatException e){
+            return "errorPage";
+        }
+        List<User> users = userService.list();
         for(User us : users){
             if(us.getId()==user_id){
                 model.addAttribute("user",us);
@@ -267,8 +281,14 @@ public class ActionController {
         String errorMessage = "id";
         model.addAttribute("errorMessage", errorMessage);
         if(us_id.equals("")||p_id.equals("")) return "errorPage";
-        int user_id = Integer.parseInt(us_id);
-        int pet_id = Integer.parseInt(p_id);
+        int user_id;
+        int pet_id;
+        try {
+            user_id = Integer.parseInt(us_id);
+            pet_id = Integer.parseInt(p_id);
+        }catch (NumberFormatException e){
+            return "errorPage";
+        }
         List<User> users = userService.list();
         Set<UsersPet> uspet;
         for(User us : users){
